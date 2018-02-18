@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Content-Security-Policy" content="connect-src *">
+	<meta name="viewport" content="initial-scale=0.8, minimum-scale=0.8, maximum-scale=0.8, user-scalable=no">
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-title" content="WebDAV Browser">
+	<meta name="format-detection" content="telephone=no">
+	<link href="styles/main.css" rel="stylesheet" type="text/css">
+	<script src="scripts/webdav.js"></script>
+	<script src="scripts/main.js"></script>
+	<title>WebDAV Browser</title>
+</head>
+<body>
+<input type="url" name="url" value="/dav/Public/Documents/Databases/" title="URL" placeholder="URL">
+<input type="text" name="directory" value="Test" title="Directory" placeholder="Directory">
+<input type="file" name="files" multiple accept="image/*" title="Files" placeholder="Files" onchange="readFiles(this);">
+<input type="text" name="user" title="User" placeholder="User">
+<input type="password" name="password" title="Password" placeholder="Password">
+<input type="button" value="Delete" onclick="testDelete();">
+<input type="button" value="Get" onclick="testGet();">
+<input type="button" value="MkCol" onclick="testMkcol();">
+<input type="button" value="PropFind" onclick="testPropfind();">
+<input type="button" value="Put" onclick="testPut();">
+<input type="button" value="PutFiles" onclick="testPutFiles();">
+
+<div id="result"></div>
+</body>
+</html>
