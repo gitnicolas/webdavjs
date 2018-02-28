@@ -15,18 +15,25 @@
 	<title>WebDAV Browser</title>
 </head>
 <body>
-<input type="url" name="url" value="/dav/Public/Documents/Databases/" title="URL" placeholder="URL">
-<input type="text" name="directory" value="Test" title="Directory" placeholder="Directory">
-<input type="file" name="files" multiple accept="image/*" title="Files" placeholder="Files" onchange="readFiles(this);">
-<input type="text" name="user" title="User" placeholder="User">
-<input type="password" name="password" title="Password" placeholder="Password">
-<input type="button" value="Delete" onclick="testDelete();">
-<input type="button" value="Get" onclick="testGet();">
-<input type="button" value="MkCol" onclick="testMkcol();">
-<input type="button" value="PropFind" onclick="testPropfind();">
-<input type="button" value="Put" onclick="testPut();">
-<input type="button" value="PutFiles" onclick="testPutFiles();">
-
+<div>
+	<div><input type="url" name="url" value="/dav/Public/Documents/Databases/" title="URL" placeholder="URL"></div>
+	<div><input type="url" name="destination" value="/dav/Public/Documents/Databases/Destination/" title="Destination" placeholder="Destination"></div>
+	<div><input type="text" name="directory" value="Test/" title="Directory" placeholder="Directory"></div>
+	<div><input type="text" name="file" value="Test.txt" title="File" placeholder="File"></div>
+	<div><input type="file" name="files" multiple accept="image/*" title="Files" placeholder="Files" onchange="readFiles(this);"></div>
+	<div><input type="text" name="user" title="User" placeholder="User"></div>
+	<div><input type="password" name="password" title="Password" placeholder="Password"></div>
+</div>
+<div>
+	<input type="button" value="Copy" onclick="testCopy();">
+	<input type="button" value="Delete" onclick="testDelete();">
+	<input type="button" value="Get" onclick="testGet();">
+	<input type="button" value="MkCol" onclick="testMkcol();">
+	<input type="button" value="Move" onclick="testMove();">
+	<input type="button" value="PropFind" onclick="testPropfind();">
+	<input type="button" value="Put" onclick="testPut();">
+	<input type="button" value="PutFiles" onclick="testPutFiles();">
+</div>
 <div id="result"></div>
 </body>
 </html>

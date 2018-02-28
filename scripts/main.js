@@ -39,44 +39,65 @@ function consoleLog(request) {
 	console.log('Response Start: %s', head);
 }
 
+function testCopy() {
+	console.log('Performing COPY ...');
+	var webDAVClient = new WebDAVClient(document.querySelector('input[name="url"]').value, document.querySelector('input[name="user"]').value, document.querySelector('input[name="password"]').value);
+	webDAVClient.copy(
+		document.querySelector('input[name="directory"]').value + document.querySelector('input[name="file"]').value,
+		consoleLog,
+		document.querySelector('input[name="destination"]').value + document.querySelector('input[name="file"]').value
+	);
+}
+
 function testDelete() {
 	console.log('Performing DELETE ...');
 	var webDAVClient = new WebDAVClient(document.querySelector('input[name="url"]').value, document.querySelector('input[name="user"]').value, document.querySelector('input[name="password"]').value);
-	webDAVClient.delete('Test/', consoleLog);
+	webDAVClient.delete(document.querySelector('input[name="directory"]').value, consoleLog);
 }
 
 function testGet() {
 	console.log('Performing GET ...');
 	var webDAVClient = new WebDAVClient(document.querySelector('input[name="url"]').value, document.querySelector('input[name="user"]').value, document.querySelector('input[name="password"]').value);
-	webDAVClient.get('Nicolas.json', consoleLog);
+	webDAVClient.get(document.querySelector('input[name="directory"]').value + document.querySelector('input[name="file"]').value, consoleLog);
 }
 
 function testMkcol() {
 	console.log('Performing MKCOL ...');
 	var webDAVClient = new WebDAVClient(document.querySelector('input[name="url"]').value, document.querySelector('input[name="user"]').value, document.querySelector('input[name="password"]').value);
-	webDAVClient.mkcol('Test/', consoleLog);
+	webDAVClient.mkcol(document.querySelector('input[name="directory"]').value, consoleLog);
+}
+
+function testMove() {
+	console.log('Performing MOVE ...');
+	var webDAVClient = new WebDAVClient(document.querySelector('input[name="url"]').value, document.querySelector('input[name="user"]').value, document.querySelector('input[name="password"]').value);
+	webDAVClient.move(
+		document.querySelector('input[name="directory"]').value + document.querySelector('input[name="file"]').value,
+		consoleLog,
+		document.querySelector('input[name="destination"]').value + document.querySelector('input[name="file"]').value
+	);
 }
 
 function testPropfind() {
 	console.log('Performing PROPFIND ...');
 	var webDAVClient = new WebDAVClient(document.querySelector('input[name="url"]').value, document.querySelector('input[name="user"]').value, document.querySelector('input[name="password"]').value);
-	webDAVClient.propfind('', consoleLog);
+	webDAVClient.propfind('', consoleLog, 1);
 }
 
 function testPut() {
 	console.log('Performing PUT ...');
 	var webDAVClient = new WebDAVClient(document.querySelector('input[name="url"]').value, document.querySelector('input[name="user"]').value, document.querySelector('input[name="password"]').value);
-	webDAVClient.put('Test/Test.txt', 'Test string for text file', consoleLog);
+	webDAVClient.put(document.querySelector('input[name="directory"]').value + document.querySelector('input[name="file"]').value, consoleLog, 'Test string for text file');
 }
 
 function testPutFiles() {
 	console.log('Performing PUT of Files ...');
 	var webDAVClient = new WebDAVClient(document.querySelector('input[name="url"]').value, document.querySelector('input[name="user"]').value, document.querySelector('input[name="password"]').value);
+	var directory = document.querySelector('input[name="directory"]').value;
 	var files = document.querySelector('input[name="files"]').files;
 	var length = files.length;
 	var i, file;
 	for (i = 0; i < length; i++) {
 		file = files[i];
-		webDAVClient.put('Test/' + file.name, file, consoleLog);
+		webDAVClient.put(directory + file.name, consoleLog, file);
 	}
 }

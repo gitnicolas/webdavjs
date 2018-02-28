@@ -1,0 +1,13 @@
+body {
+	margin: 0;
+}
+
+input {
+	box-sizing: border-box;
+	width: calc(100% - 4px);
+	margin: 2px;
+}
+
+input[type="button"] {
+	width: calc(100% / 8 - 4px);
+}
