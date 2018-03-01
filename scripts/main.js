@@ -101,3 +101,16 @@ function testPutFiles() {
 		webDAVClient.put(directory + file.name, consoleLog, file);
 	}
 }
+
+function testPatchFiles() {
+	console.log('Performing PATCH of Files ...');
+	var webDAVClient = new WebDAVClient(document.querySelector('input[name="url"]').value, document.querySelector('input[name="user"]').value, document.querySelector('input[name="password"]').value);
+	var directory = document.querySelector('input[name="directory"]').value;
+	var files = document.querySelector('input[name="files"]').files;
+	var length = files.length;
+	var i, file;
+	for (i = 0; i < length; i++) {
+		file = files[i];
+		webDAVClient.patch(directory + file.name, consoleLog, file, 0, 30000);
+	}
+}

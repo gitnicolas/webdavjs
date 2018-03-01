@@ -9,5 +9,5 @@ input {
 }
 
 input[type="button"] {
-	width: calc(100% / 8 - 4px);
+	width: calc(100% / 9 - 4px);
 }
