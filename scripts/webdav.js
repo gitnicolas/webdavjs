@@ -94,7 +94,7 @@ function WebDAVClient(url, user, password) {
 				var entries = request.responseXML.documentElement.children;
 				var length = entries.length;
 				var prefix = entries[0].getElementsByTagName('D:href')[0].firstChild.nodeValue.length;
-				var i, entry, properties, item, attributes, creation, directory, modification, size, type;
+				var i, entry, properties, item, attributes, creation, modification, size, type;
 				var items = [];
 				for (i = 1; i < length; i++) {
 					entry = entries[i];
@@ -102,11 +102,11 @@ function WebDAVClient(url, user, password) {
 					item = {};
 					if ((attributes = properties.getElementsByTagName('lp2:executable')).length) item.attributes = (attributes[0].firstChild.nodeValue === 'T') ? 'X' : '-';
 					if ((creation = properties.getElementsByTagName('lp1:creationdate')).length) item.creation = (new Date(creation[0].firstChild.nodeValue)).toJSON();
-					item.directory = directory = (properties.getElementsByTagName('D:collection').length > 0);
+					item.directory = (properties.getElementsByTagName('D:collection').length > 0);
 					if ((modification = properties.getElementsByTagName('lp1:getlastmodified')).length) item.modification = (new Date(modification[0].firstChild.nodeValue)).toJSON();
 					item.name = entry.getElementsByTagName('D:href')[0].firstChild.nodeValue.substr(prefix);
-					if (directory) item.name = item.name.replace(/\/$/, '');
-					if (!directory) item.extension = item.name.replace(/^.*\.(.*)$/, '$1');
+					if (item.directory) item.name = item.name.replace(/\/$/, '');
+					else item.extension = item.name.replace(/^.*\.(.*)$/, '$1');
 					if ((size = properties.getElementsByTagName('lp1:getcontentlength')).length) item.size = size[0].firstChild.nodeValue;
 					if ((type = properties.getElementsByTagName('D:getcontenttype')).length) item.type = type[0].firstChild.nodeValue;
 					items.push(item);
