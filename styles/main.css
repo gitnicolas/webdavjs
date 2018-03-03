@@ -1,14 +1,129 @@
 body {
 	margin: 0;
+	font-family: 'Roboto', sans-serif;
+	font-style: normal;
+	font-weight: 400;
+	font-size: 14px;
+	overflow: hidden;
+	-webkit-overflow-scrolling: touch;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	-ms-overflow-style: -ms-autohiding-scrollbar;
 }
 
-input {
+input, select, textarea {
+	appearance: none;
+	box-shadow: none;
+	border-radius: 0;
+	display: block;
 	box-sizing: border-box;
-	width: calc(100% - 4px);
+	width: calc(100% - 40px);
+	background-color: transparent;
+	margin: 20px;
+	border: 0 solid #cccccc;
+	border-bottom-width: 1px;
+	padding-bottom: 1px;
+	font-family: 'Roboto', sans-serif;
+	font-style: normal;
+	font-weight: 400;
+	font-size: 14px;
+}
+
+input:focus, select:focus, textarea:focus {
+	outline: none;
+	border-color: #29b6f6;
+	box-shadow: 0 2px 1px -1px rgba(1, 181, 244, 0.5);
+	font-weight: 500;
+	color: #29b6f6;
+}
+
+option {
+	color: #29b6f6;
+}
+
+option[selected] {
+	background-color: inherit;
+	font-weight: 500;
+}
+
+option.default {
+	color: transparent;
+}
+
+div.hidden {
+	display: none;
+}
+
+div.shadow-top {
+	box-shadow: 0 -2px 3px rgba(0, 0, 0, 0.25);
+}
+
+div.shadow-right {
+	box-shadow: 2px 0 3px rgba(0, 0, 0, 0.25);
+}
+
+div.shadow-bottom {
+	box-shadow: 0 2px 3px rgba(0, 0, 0, 0.25);
+}
+
+div.shadow-left {
+	box-shadow: -2px 0 3px rgba(0, 0, 0, 0.25);
+}
+
+div.shadow-previous {
+	box-shadow: -2px 0 3px rgba(0, 0, 0, 0.25);
+}
+
+div.shadow-next {
+	box-shadow: 2px 0 3px rgba(0, 0, 0, 0.25);
+}
+
+@media (max-width: 575px) {
+	div.shadow-previous {
+		box-shadow: 0 -2px 3px rgba(0, 0, 0, 0.25);
+	}
+
+	div.shadow-next {
+		box-shadow: 0 2px 3px rgba(0, 0, 0, 0.25);
+	}
+}
+
+div.shadow-page {
+	box-shadow: -3px 0 5px rgba(0, 0, 0, 0.25);
+}
+
+div.shadow-floating {
+	box-shadow: 2px 4px 7px rgba(0, 0, 0, 0.25);
+}
+
+span.first-word {
+	font-weight: 700;
+}
+
+div.ellipsis {
+	overflow-x: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+div.transition {
+	transition: all 0.15s ease-in-out;
+}
+
+::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+	background-color: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-track {
 	margin: 2px;
 }
 
-input[type="button"] {
-	width: calc((100% + 4px) / 6 - 8px);
-	padding: 1px 0;
+::-webkit-scrollbar-thumb {
+	border-radius: 5px;
+	background-color: rgba(0, 0, 0, 0.25);
 }
