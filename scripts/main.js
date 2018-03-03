@@ -83,6 +83,12 @@ function testPropfind() {
 	webDAVClient.propfind('', consoleLog, 1);
 }
 
+function testPatch() {
+	console.log('Performing PATCH ...');
+	var webDAVClient = new WebDAVClient(document.querySelector('input[name="url"]').value, document.querySelector('input[name="user"]').value, document.querySelector('input[name="password"]').value);
+	webDAVClient.patch(document.querySelector('input[name="directory"]').value + document.querySelector('input[name="file"]').value, consoleLog, 'Test string for text file');
+}
+
 function testPut() {
 	console.log('Performing PUT ...');
 	var webDAVClient = new WebDAVClient(document.querySelector('input[name="url"]').value, document.querySelector('input[name="user"]').value, document.querySelector('input[name="password"]').value);
@@ -102,8 +108,8 @@ function testPutFiles() {
 	}
 }
 
-function testPatchFiles() {
-	console.log('Performing PATCH of Files ...');
+function testBurstFiles() {
+	console.log('Performing BURST of Files ...');
 	var webDAVClient = new WebDAVClient(document.querySelector('input[name="url"]').value, document.querySelector('input[name="user"]').value, document.querySelector('input[name="password"]').value);
 	var directory = document.querySelector('input[name="directory"]').value;
 	var files = document.querySelector('input[name="files"]').files;
@@ -111,6 +117,6 @@ function testPatchFiles() {
 	var i, file;
 	for (i = 0; i < length; i++) {
 		file = files[i];
-		webDAVClient.patch(directory + file.name, consoleLog, file, 0, 30000);
+		webDAVClient.burst(directory + file.name, consoleLog, file, 0, 30000);
 	}
 }

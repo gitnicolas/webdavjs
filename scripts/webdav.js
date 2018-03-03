@@ -5,7 +5,7 @@ function WebDAVClient(url, user, password) {
 	this.user = user;
 	this.password = password;
 
-	this.request = function (method, url, user, password, headers, data, callback) {
+	this.request = function (method, url, user, password, headers, blob, callback) {
 		var methods = ['COPY', 'DELETE', 'GET', 'MKCOL', 'MOVE', 'PROPFIND', 'PUT'];
 
 		var request = new XMLHttpRequest();
@@ -23,7 +23,7 @@ function WebDAVClient(url, user, password) {
 			var keys = Object.keys(headers);
 			for (var i = 0, length = keys.length; i < length; i++) request.setRequestHeader(keys[i], headers[keys[i]]);
 		}
-		request.send(data);
+		request.send(blob);
 	};
 
 	this.copy = function (uri, callback, destination, overwrite, depth) {
@@ -59,24 +59,30 @@ function WebDAVClient(url, user, password) {
 		this.request('PROPFIND', this.url + uri, this.user, this.password, headers, undefined, callback);
 	};
 
-	this.patch = function (uri, callback, data, start, length) {
-		var size = data.size;
+	this.patch = function (uri, callback, blob, start) {
+		if (typeof start !== 'number' || start < 0) start = 0;
+		var headers = {'Content-Range': 'bytes ' + start + '-' + (start + blob.size - 1) + '/*'};
+		this.request('PUT', this.url + uri, this.user, this.password, headers, blob, callback);
+	};
+
+	this.put = function (uri, callback, blob) {
+		this.request('PUT', this.url + uri, this.user, this.password, undefined, blob, callback);
+	};
+
+	this.burst = function (uri, callback, blob, start, length) {
+		var size = blob.size;
 		if (typeof start !== 'number') start = 0;
 		if (start >= size) return;
 		if (start < 0) start = Math.max(size + start, 0);
 		var end = (typeof length === 'number' && length > 0) ? Math.min(start + length, size) : size;
 		var headers = {'Content-Range': 'bytes ' + start + '-' + (end - 1) + '/' + size};
-		var chunk = data.slice(start, end, data.type);
-		var next = (function (me, uri, callback, data, start, length) {
+		var chunk = blob.slice(start, end, blob.type);
+		var next = (function (me, uri, callback, blob, start, length) {
 			return function (request) {
 				callback(request);
-				me.patch(uri, callback, data, start, length);
+				me.burst(uri, callback, blob, start, length);
 			}
-		})(this, uri, callback, data, end, length);
+		})(this, uri, callback, blob, end, length);
 		this.request('PUT', this.url + uri, this.user, this.password, headers, chunk, next);
-	};
-
-	this.put = function (uri, callback, data) {
-		this.request('PUT', this.url + uri, this.user, this.password, undefined, data, callback);
 	};
 }
