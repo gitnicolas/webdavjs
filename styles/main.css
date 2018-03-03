@@ -9,6 +9,6 @@ input {
 }
 
 input[type="button"] {
-	width: calc((100% + 4px) / 5 - 8px);
+	width: calc((100% + 4px) / 6 - 8px);
 	padding: 1px 0;
 }

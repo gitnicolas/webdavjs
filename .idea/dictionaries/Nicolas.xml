@@ -2,6 +2,10 @@
   <dictionary name="Nicolas">
     <words>
       <w>arraybuffer</w>
+      <w>creationdate</w>
+      <w>getcontentlength</w>
+      <w>getcontenttype</w>
+      <w>getlastmodified</w>
       <w>mkcol</w>
       <w>propfind</w>
       <w>webdav</w>

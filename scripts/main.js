@@ -120,3 +120,9 @@ function testBurstFiles() {
 		webDAVClient.burst(directory + file.name, consoleLog, file, 0, 30000);
 	}
 }
+
+function testList() {
+	console.log('Performing LIST ...');
+	var webDAVClient = new WebDAVClient(document.querySelector('input[name="url"]').value, document.querySelector('input[name="user"]').value, document.querySelector('input[name="password"]').value);
+	webDAVClient.list('', consoleLog);
+}

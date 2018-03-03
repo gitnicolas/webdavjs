@@ -5,7 +5,7 @@ function WebDAVClient(url, user, password) {
 	this.user = user;
 	this.password = password;
 
-	this.request = function (method, url, user, password, headers, blob, callback) {
+	this.request = function (method, url, user, password, headers, data, callback) {
 		var methods = ['COPY', 'DELETE', 'GET', 'MKCOL', 'MOVE', 'PROPFIND', 'PUT'];
 
 		var request = new XMLHttpRequest();
@@ -14,7 +14,7 @@ function WebDAVClient(url, user, password) {
 			return function () {
 				if (request.readyState === XMLHttpRequest.DONE) {
 					if (request.status >= 200 && request.status < 300) callback(request);
-					else throw new Error('response with error status: ' + request.status);
+					else throw new Error('response with error status: ' + request.status + ' (' + request.statusText + ')');
 				}
 			};
 		})(request, callback);
@@ -23,7 +23,7 @@ function WebDAVClient(url, user, password) {
 			var keys = Object.keys(headers);
 			for (var i = 0, length = keys.length; i < length; i++) request.setRequestHeader(keys[i], headers[keys[i]]);
 		}
-		request.send(blob);
+		request.send(data);
 	};
 
 	this.copy = function (uri, callback, destination, overwrite, depth) {
@@ -81,8 +81,39 @@ function WebDAVClient(url, user, password) {
 			return function (request) {
 				callback(request);
 				me.burst(uri, callback, blob, start, length);
-			}
+			};
 		})(this, uri, callback, blob, end, length);
 		this.request('PUT', this.url + uri, this.user, this.password, headers, chunk, next);
+	};
+
+	this.list = function (uri, callback) {
+		var listCallback = (function (callback) {
+			return function (request) {
+				var contentType = request.getResponseHeader('Content-Type');
+				if (contentType.indexOf('text/xml') === -1 && contentType.indexOf('application/xml') === -1) throw new Error('PROPFIND did not return an XML document, but:' + contentType);
+				var entries = request.responseXML.documentElement.children;
+				var length = entries.length;
+				var prefix = entries[0].getElementsByTagName('D:href')[0].firstChild.nodeValue.length;
+				var i, entry, properties, item, attributes, creation, directory, modification, size, type;
+				var items = [];
+				for (i = 1; i < length; i++) {
+					entry = entries[i];
+					properties = entry.getElementsByTagName('D:prop')[0];
+					item = {};
+					if ((attributes = properties.getElementsByTagName('lp2:executable')).length) item.attributes = (attributes[0].firstChild.nodeValue === 'T') ? 'X' : '-';
+					if ((creation = properties.getElementsByTagName('lp1:creationdate')).length) item.creation = (new Date(creation[0].firstChild.nodeValue)).toJSON();
+					item.directory = directory = (properties.getElementsByTagName('D:collection').length > 0);
+					if ((modification = properties.getElementsByTagName('lp1:getlastmodified')).length) item.modification = (new Date(modification[0].firstChild.nodeValue)).toJSON();
+					item.name = entry.getElementsByTagName('D:href')[0].firstChild.nodeValue.substr(prefix);
+					if (directory) item.name = item.name.replace(/\/$/, '');
+					if (!directory) item.extension = item.name.replace(/^.*\.(.*)$/, '$1');
+					if ((size = properties.getElementsByTagName('lp1:getcontentlength')).length) item.size = size[0].firstChild.nodeValue;
+					if ((type = properties.getElementsByTagName('D:getcontenttype')).length) item.type = type[0].firstChild.nodeValue;
+					items.push(item);
+				}
+				callback(items);
+			};
+		})(callback);
+		this.propfind(uri, listCallback, 1);
 	};
 }
