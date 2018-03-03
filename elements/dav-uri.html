@@ -1,0 +1,35 @@
+<link href="../libraries/polymer/polymer.html" rel="import">
+<dom-module id="dav-uri">
+	<template>
+		<style>
+			:host {
+				flex: 1 1;
+				display: flex;
+				background-color: white;
+			}
+
+			div.uri {
+				flex: 1 1;
+				margin: 0 16px;
+			}
+		</style>
+		<div class="uri mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+			<input id="uri" class="mdl-textfield__input" type="text" value="{{uri::input}}">
+			<label class="mdl-textfield__label" for="uri">URI</label>
+		</div>
+	</template>
+	<script>
+		Polymer({
+			is: 'dav-uri',
+			properties: {
+				parameters: {
+					type: String,
+					value: '',
+					readOnly: false,
+					notify: true,
+					reflectToAttribute: false
+				}
+			}
+		})
+	</script>
+</dom-module>

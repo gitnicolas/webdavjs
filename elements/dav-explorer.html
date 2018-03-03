@@ -1,10 +1,37 @@
 <link href="../libraries/polymer/polymer.html" rel="import">
+<link href="dav-uri.html" rel="import">
+<link href="dav-tree.html" rel="import">
+<link href="dav-list.html" rel="import">
 <dom-module id="dav-explorer">
 	<template>
-		Hello World !!
-		<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-			Button
-		</button>
+		<style>
+			:host {
+				position: absolute;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				display: flex;
+				flex-direction: column;
+			}
+
+			div.header {
+				flex: 0 0 auto;
+				display: flex;
+			}
+
+			div.content {
+				flex: 1 1;
+				display: flex;
+			}
+		</style>
+		<div class="header">
+			<dav-uri uri="{{uri}}"></dav-uri>
+		</div>
+		<div class="content">
+			<dav-tree uri="{{uri}}"></dav-tree>
+			<dav-list uri="{{uri}}"></dav-list>
+		</div>
 	</template>
 	<script>
 		Polymer({

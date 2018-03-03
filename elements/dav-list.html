@@ -1,0 +1,26 @@
+<link href="../libraries/polymer/polymer.html" rel="import">
+<dom-module id="dav-list">
+	<template>
+		<style>
+			:host {
+				flex: 1 1;
+				background-color: #fafafa;
+			}
+		</style>
+		&nbsp;
+	</template>
+	<script>
+		Polymer({
+			is: 'dav-list',
+			properties: {
+				parameters: {
+					type: String,
+					value: '',
+					readOnly: false,
+					notify: true,
+					reflectToAttribute: false
+				}
+			}
+		})
+	</script>
+</dom-module>
