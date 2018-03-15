@@ -1,0 +1,45 @@
+<link href="../libraries/polymer/polymer.html" rel="import">
+<link href="dav-explorer.html" rel="import">
+<dom-module id="dav-application">
+	<template>
+		<style>
+			:host {
+				position: fixed;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				display: flex;
+				flex-direction: column;
+			}
+
+			div.header {
+				z-index: 1;
+				flex: 0 0 auto;
+				background-color: #607d8b;
+				display: flex;
+				color: white;
+			}
+
+			div.title {
+				flex: 1 1;
+				padding: 16px;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				font-size: 20px;
+			}
+		</style>
+		<div class="header shadow-bottom">
+			<div class="title">
+				<div class="ellipsis"><span class="first-word">WebDAV</span> Explorer</div>
+			</div>
+		</div>
+		<dav-explorer></dav-explorer>
+	</template>
+	<script>
+		Polymer({
+			is: 'dav-application'
+		})
+	</script>
+</dom-module>

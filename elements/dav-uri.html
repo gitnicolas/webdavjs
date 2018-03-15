@@ -4,25 +4,55 @@
 		<style>
 			:host {
 				flex: 1 1;
-				display: flex;
 				background-color: white;
+				display: flex;
+				flex-direction: column;
+			}
+
+			div.settings {
+				background-color: #f5f5f5;
+				flex-direction: column;
 			}
 
 			div.uri {
-				flex: 1 1;
-				margin: 0 16px;
+				align-items: center;
 			}
 		</style>
-		<div class="uri mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-			<input id="uri" class="mdl-textfield__input" type="text" value="{{uri::input}}">
-			<label class="mdl-textfield__label" for="uri">URI</label>
+		<div class="fit flex settings">
+			<div class="fit mdl-textfield mdl-js-textfield">
+				<input id="url" class="mdl-textfield__input" type="url" value="{{url::input}}" required>
+				<label class="mdl-textfield__label" for="url">Root URL</label>
+			</div>
+			<div class="fit mdl-textfield mdl-js-textfield">
+				<input id="user" class="mdl-textfield__input" type="text" value="{{user::input}}">
+				<label class="mdl-textfield__label" for="user">User</label>
+			</div>
+			<div class="fit mdl-textfield mdl-js-textfield">
+				<input id="password" class="mdl-textfield__input" type="password" value="{{password::input}}">
+				<label class="mdl-textfield__label" for="password">Password</label>
+			</div>
+			<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+				Save
+			</button>
+		</div>
+		<div class="fit flex uri shadow-top">
+			<button class="fit mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+				Host
+			</button>
+			<div class="extend mdl-textfield mdl-js-textfield">
+				<input id="uri" class="mdl-textfield__input" type="text" value="{{uri::input}}">
+				<label class="mdl-textfield__label" for="uri">URI</label>
+			</div>
+			<button class="fit mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+				Go
+			</button>
 		</div>
 	</template>
 	<script>
 		Polymer({
 			is: 'dav-uri',
 			properties: {
-				parameters: {
+				uri: {
 					type: String,
 					value: '',
 					readOnly: false,
