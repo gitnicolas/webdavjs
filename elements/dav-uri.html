@@ -11,39 +11,40 @@
 
 			div.settings {
 				background-color: #f5f5f5;
-				flex-direction: column;
 			}
 
-			div.uri {
+			div.address {
 				align-items: center;
 			}
 		</style>
-		<div class="fit flex settings">
-			<div class="fit mdl-textfield mdl-js-textfield">
-				<input id="url" class="mdl-textfield__input" type="url" value="{{url::input}}" required>
+		<div id="settings" class="fit flex settings">
+			<div class="mdl-textfield mdl-js-textfield">
+				<input id="url" class="mdl-textfield__input" type="url" value="{{settings.url::input}}" required>
 				<label class="mdl-textfield__label" for="url">Root URL</label>
 			</div>
-			<div class="fit mdl-textfield mdl-js-textfield">
-				<input id="user" class="mdl-textfield__input" type="text" value="{{user::input}}">
+			<div class="break"></div>
+			<div class="mdl-textfield mdl-js-textfield">
+				<input id="user" class="mdl-textfield__input" type="text" value="{{settings.user::input}}">
 				<label class="mdl-textfield__label" for="user">User</label>
 			</div>
-			<div class="fit mdl-textfield mdl-js-textfield">
-				<input id="password" class="mdl-textfield__input" type="password" value="{{password::input}}">
+			<div class="mdl-textfield mdl-js-textfield">
+				<input id="password" class="mdl-textfield__input" type="password" value="{{settings.password::input}}">
 				<label class="mdl-textfield__label" for="password">Password</label>
 			</div>
-			<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+			<div class="break"></div>
+			<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" on-click="save">
 				Save
 			</button>
 		</div>
-		<div class="fit flex uri shadow-top">
-			<button class="fit mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+		<div id="address" class="fit flex address shadow-top">
+			<button id="host" class="fit mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" disabled on-click="toggle">
 				Host
 			</button>
-			<div class="extend mdl-textfield mdl-js-textfield">
+			<div class="mdl-textfield mdl-js-textfield">
 				<input id="uri" class="mdl-textfield__input" type="text" value="{{uri::input}}">
 				<label class="mdl-textfield__label" for="uri">URI</label>
 			</div>
-			<button class="fit mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+			<button id="go" class="fit mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" on-click="go">
 				Go
 			</button>
 		</div>
@@ -52,12 +53,86 @@
 		Polymer({
 			is: 'dav-uri',
 			properties: {
+				client: {
+					type: Object,
+					value: null,
+					readOnly: false,
+					notify: false,
+					reflectToAttribute: false
+				},
+				isReady: {
+					type: Boolean,
+					value: false,
+					readOnly: false,
+					notify: false,
+					reflectToAttribute: false
+				},
+				items: {
+					type: Array,
+					value: [],
+					readOnly: false,
+					notify: true,
+					reflectToAttribute: false
+				},
+				settings: {
+					type: Object,
+					value: {
+						url: location.href.replace(/^(.*)\/.*$/, '$1/'),
+						user: undefined,
+						password: undefined
+					},
+					readOnly: false,
+					notify: false,
+					reflectToAttribute: false
+				},
 				uri: {
 					type: String,
 					value: '',
 					readOnly: false,
 					notify: true,
 					reflectToAttribute: false
+				}
+			},
+			ready: function () {
+				var settings = localStorage.getItem('settings');
+				if (settings) {
+					this.settings = JSON.parse(settings);
+					this.toggle();
+				}
+				this.save();
+				this.isReady = true;
+			},
+			save: function () {
+				var settings = this.settings;
+				var client = this.client;
+				if (this.isReady) {
+					localStorage.setItem('settings', JSON.stringify(settings));
+					this.toggle();
+				}
+				if (client) {
+					client.url = settings.url;
+					client.user = settings.user;
+					client.password = settings.password;
+				}
+			},
+			toggle: function () {
+				var style = 'hidden';
+				var settings = this.$.settings;
+				var hidden = settings.classList.contains(style);
+				this.toggleClass(style, !hidden, settings);
+				this.toggleAttribute('disabled', hidden, this.$.host);
+				this.toggleAttribute('disabled', hidden, this.$.uri);
+				this.toggleAttribute('disabled', hidden, this.$.go);
+			},
+			go: function () {
+				var client = this.client;
+				if (client && client.url) {
+					client.list(this.uri, (function (me) {
+							return function (items) {
+								me.set('items', items);
+							};
+						})(this)
+					);
 				}
 			}
 		})

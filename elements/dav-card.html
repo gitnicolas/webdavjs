@@ -1,0 +1,31 @@
+<link href="../libraries/polymer/polymer.html" rel="import">
+<dom-module id="dav-card">
+	<template>
+		<style>
+			:host {
+				flex: 0 0 auto;
+				border-bottom: 1px solid rgba(0, 0, 0, .1);
+				padding: 16px;
+			}
+
+			:host:last-of-type {
+				border-bottom: none;
+			}
+		</style>
+		[[item.name]]
+	</template>
+	<script>
+		Polymer({
+			is: 'dav-card',
+			properties: {
+				item: {
+					type: Object,
+					value: null,
+					readOnly: false,
+					notify: false,
+					reflectToAttribute: false
+				}
+			}
+		})
+	</script>
+</dom-module>

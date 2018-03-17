@@ -87,7 +87,8 @@ function WebDAVClient(url, user, password) {
 	};
 
 	this.list = function (uri, callback) {
-		var listCallback = (function (callback) {
+		var listCallback;
+		if (typeof callback === 'function') listCallback = (function (callback) {
 			return function (request) {
 				var contentType = request.getResponseHeader('Content-Type');
 				if (contentType.indexOf('text/xml') === -1 && contentType.indexOf('application/xml') === -1) throw new Error('PROPFIND did not return an XML document, but:' + contentType);

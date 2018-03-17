@@ -1,13 +1,31 @@
 <link href="../libraries/polymer/polymer.html" rel="import">
+<link href="dav-card.html" rel="import">
 <dom-module id="dav-list">
 	<template>
 		<style>
 			:host {
 				flex: 1 1;
+				padding: 16px;
 				background-color: #fafafa;
+				display: flex;
+				flex-direction: column;
+				overflow-x: hidden;
+				overflow-y: auto;
+			}
+
+			div.content {
+				flex: 0 0 auto;
+				border-radius: 2px;
+				background-color: white;
+				display: flex;
+				flex-direction: column;
 			}
 		</style>
-		&nbsp;
+		<div class="content mdl-shadow--2dp">
+			<template is="dom-repeat" items="[[items]]" as="item">
+				<dav-card item="[[item]]"></dav-card>
+			</template>
+		</div>
 	</template>
 	<script>
 		Polymer({
@@ -18,6 +36,13 @@
 					value: '',
 					readOnly: false,
 					notify: true,
+					reflectToAttribute: false
+				},
+				items: {
+					type: Array,
+					value: [],
+					readOnly: false,
+					notify: false,
 					reflectToAttribute: false
 				}
 			}

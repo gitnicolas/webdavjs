@@ -47,19 +47,21 @@ option.default {
 div.flex {
 	padding: 8px;
 	display: flex;
-
+	flex-wrap: wrap;
 }
 
 div.flex > * {
+	flex: 1 1;
 	margin: 8px;
 }
 
-.extend {
-	flex: 1 1;
+div.flex > .fit {
+	flex: 0 0 auto;
 }
 
-.fit {
-	flex: 0 0 auto;
+div.flex > div.break {
+	flex: 0 0 100%;
+	margin: inherit;
 }
 
 div.hidden {

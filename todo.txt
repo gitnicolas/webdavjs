@@ -1,0 +1,3 @@
+- Only use Material Design Lite's shadows, remove usage of main.css shadows
+- Check homogeneous usage of div.flex and .fit style classes of main.css
+- Refine default behavior for unset settings

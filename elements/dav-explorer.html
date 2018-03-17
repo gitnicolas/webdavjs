@@ -1,7 +1,7 @@
 <link href="../libraries/polymer/polymer.html" rel="import">
 <link href="dav-uri.html" rel="import">
-<link href="dav-tree.html" rel="import">
 <link href="dav-list.html" rel="import">
+<script src="../scripts/webdav.js"></script>
 <dom-module id="dav-explorer">
 	<template>
 		<style>
@@ -22,16 +22,24 @@
 			}
 		</style>
 		<div class="header">
-			<dav-uri uri="{{uri}}"></dav-uri>
+			<dav-uri client="[[client]]" uri="{{uri}}" items="{{items}}"></dav-uri>
 		</div>
 		<div class="content">
-			<dav-tree uri="{{uri}}"></dav-tree>
-			<dav-list uri="{{uri}}"></dav-list>
+			<dav-list uri="{{uri}}" items="[[items]]"></dav-list>
 		</div>
 	</template>
 	<script>
 		Polymer({
-			is: 'dav-explorer'
+			is: 'dav-explorer',
+			properties: {
+				client: {
+					type: Object,
+					value: new WebDAVClient(),
+					readOnly: true,
+					notify: false,
+					reflectToAttribute: false
+				}
+			}
 		})
 	</script>
 </dom-module>
