@@ -22,7 +22,7 @@
 			}
 		</style>
 		<div class="content mdl-shadow--2dp">
-			<template is="dom-repeat" items="[[items]]" as="item">
+			<template is="dom-repeat" items="[[items]]" as="item" sort="sort">
 				<dav-card item="[[item]]"></dav-card>
 			</template>
 		</div>
@@ -45,6 +45,13 @@
 					notify: false,
 					reflectToAttribute: false
 				}
+			},
+			sort: function (a, b) {
+				if (a.directory && !b.directory) return -1;
+				if (!a.directory && b.directory) return 1;
+				if (a.name < b.name) return -1;
+				if (a.name > b.name) return 1;
+				return 0;
 			}
 		})
 	</script>

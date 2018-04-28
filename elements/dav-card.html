@@ -5,14 +5,53 @@
 			:host {
 				flex: 0 0 auto;
 				border-bottom: 1px solid rgba(0, 0, 0, .1);
-				padding: 16px;
+				padding: 8px;
+				display: flex;
+				cursor: pointer;
 			}
 
 			:host:last-of-type {
 				border-bottom: none;
 			}
+
+			:host > div {
+				flex: 0 0 auto;
+				padding: 8px;
+				display: flex;
+				align-items: center;
+			}
+
+			div.name {
+				flex: 1 1;
+				min-width: 0;
+			}
+
+			div.size {
+				width: 68px;
+			}
+
+			div.type {
+				width: 128px;
+			}
+
+			div.extension {
+				width: 55px;
+			}
 		</style>
-		[[item.name]]
+		<div><img src="[[icon(item)]]" alt="[[item.type]]" width="24px" height="24px" on-error="fallback"></div>
+		<div class="name">
+			<div class="ellipsis">[[item.name]]</div>
+		</div>
+		<div class="size">
+			<div class="ellipsis">[[size(item.size)]]</div>
+		</div>
+		<div class="type">
+			<div class="ellipsis">[[item.type]]</div>
+		</div>
+		<div class="extension">
+			<div class="ellipsis">[[extension(item)]]</div>
+		</div>
+		<div><i>more_vert</i></div>
 	</template>
 	<script>
 		Polymer({
@@ -25,6 +64,31 @@
 					notify: false,
 					reflectToAttribute: false
 				}
+			},
+			extension: function (item) {
+				if (item.extension) return item.extension;
+				if (item.directory) return 'directory';
+			},
+			fallback: function (event) {
+				var target = event.target;
+				if (target.src.indexOf('mimetypes/image-') !== -1) target.src = 'mimetypes/image-x-generic.png';
+				else target.src = 'mimetypes/unknown.png';
+			},
+			icon: function (item) {
+				var filename = 'unknown';
+				if (item.directory) filename = 'inode-directory';
+				else if (item.type) filename = item.type.replace(/\//, '-');
+				return 'mimetypes/' + filename + '.png';
+			},
+			size: function (size) {
+				if (typeof size !== 'number') return;
+				var units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+				var i = 0;
+				while (size > 1024) {
+					size = size / 1024;
+					i++;
+				}
+				return Math.round(size * 100) / 100 + ' ' + units[i];
 			}
 		})
 	</script>

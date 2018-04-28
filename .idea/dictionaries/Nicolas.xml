@@ -6,6 +6,8 @@
       <w>getcontentlength</w>
       <w>getcontenttype</w>
       <w>getlastmodified</w>
+      <w>inode</w>
+      <w>mimetypes</w>
       <w>mkcol</w>
       <w>propfind</w>
       <w>webdav</w>

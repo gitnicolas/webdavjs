@@ -108,7 +108,7 @@ function WebDAVClient(url, user, password) {
 					item.name = entry.getElementsByTagName('D:href')[0].firstChild.nodeValue.substr(prefix);
 					if (item.directory) item.name = item.name.replace(/\/$/, '');
 					else item.extension = item.name.replace(/^.*\.(.*)$/, '$1');
-					if ((size = properties.getElementsByTagName('lp1:getcontentlength')).length) item.size = size[0].firstChild.nodeValue;
+					if ((size = properties.getElementsByTagName('lp1:getcontentlength')).length) item.size = size[0].firstChild.nodeValue >> 0;
 					if ((type = properties.getElementsByTagName('D:getcontenttype')).length) item.type = type[0].firstChild.nodeValue;
 					items.push(item);
 				}
